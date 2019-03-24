@@ -1,0 +1,58 @@
+@body-background-color: dodgerblue;
+@jumbotron-background-color: white;
+@footer-background-color: white;
+@background-image-url: "resources/images/athlete.jpg";
+@base-font: "Comic Sans";
+
+h2 {
+  color: dimgray;
+}
+
+.jumbotron {
+  background-color: @jumbotron-background-color;
+}
+
+.card .text-muted {
+  font-size: 16px;
+}
+
+body {
+  background-color: @body-background-color;
+  background-image: url(@background-image-url);
+}
+
+footer {
+  background-color: @footer-background-color;
+  padding: 20px;
+}
+
+img {
+  padding: 30px;
+}
+
+/*
+courts.html
+*/
+.dropdown {
+  padding: 3px;
+}
+
+
+.table-responsive {
+  border: #2c3e50;
+}
+
+form > p {
+  font-size: 100px;
+}
+
+/*
+If things are browser specific
+.user-select(none)
+*/
+.user-select(@type) {
+  -webkit-user-select: @type;
+  -moz-user-select: @type;
+  -ms-user-select: @type;
+  user-select: @type;
+}
