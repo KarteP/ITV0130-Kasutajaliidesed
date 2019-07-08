@@ -22,6 +22,9 @@
     <link rel="stylesheet/less" type="text/css" href="resources/css/calendar.less" />
     <link rel="stylesheet/less" type="text/css" href="resources/css/navbar.less" />
     <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js" ></script>
+
+    <!-- Vue.js production version, optimized for size and speed -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
 </head>
 <body>
 <header>
@@ -39,9 +42,93 @@
         </div>
         <!-- Vue.js -->
         <template>
-            <date-pick v-model="date"></date-pick>
+            <date-pick v-model="date">{}</date-pick>
         </template>
-        <script src="resources/js/main.js"></script>
+        <!--<script src="resources/js/calendar.js" type="module"></script> oige, kuid on vaja nodes jooksutada-->
+        <script>
+            import DatePick from 'vue-date-pick';
+            import 'vendors/vue-date-pick/dist/vueDatePick.css';
+
+            export default {
+                components: {DatePick},
+                data: () => ({
+                    date: '2019-01-01'
+                })
+            };
+        </script>
+
+        <div id="app">
+            <div v-for="n in names">
+                <blog-post v-bind:id="n.id" v-bind:name="n.name"></blog-post>
+            </div>
+        </div>
+        <blog-post id="1" name="K"></blog-post>
+
+        <script>
+            Vue.component('blog-post', {
+                props: {
+                    name: String,
+                    id: {
+                        type: Number,
+                        required: false
+                    },
+                    meta: Object
+                },
+                computed: {
+                    titleUpper: function() {
+                        return this.$props.name.toUpperCase();
+                    }
+                },
+                template: '<h1>ID: {{ id }} {{ titleUpper }}</h1>'
+            });
+
+            new Vue({
+                el: '#app',
+                data: {
+                    names: [
+                        { id: 1, name: 'Mari' },
+                        { id: 2, name: 'Mati' },
+                        { id: 3, name: 'Kati' }
+                    ]
+                }
+            })
+        </script>
+
+
+        <div id="app2">
+            <h2> Tere {{ name }}</h2>
+            <p><strong>Tekst:</strong>{{ name }}</p>
+            <p><label>
+                <input type="text" v-model="name">
+            </label></p>
+        </div>
+
+        <div id="app3">
+            {{ message }}
+        </div>
+        <script src="resources/js/calendar_message.js" type="module"></script>
+
+        <script>
+            let app = new Vue({
+                el: '#transfer-0-app',
+                mounted: {
+                    this: loadData,
+                },
+                methods: {
+                    loadData() {
+                        fetch('/api/transfers.json').then(response => {
+                            response.json()
+                        })
+                            .then(json => {
+                                json.forEach((item) => {
+                                    return item.name
+                                })
+                            })
+                    }
+                }
+            })
+        </script>
+
     </div>
 </main>
 <footer class="text-muted">
@@ -62,7 +149,5 @@
         </div>
     </div>
 </footer>
-<!-- production version, optimized for size and speed -->
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
 </body>
 </html>
